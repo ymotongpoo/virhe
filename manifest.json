@@ -1,0 +1,19 @@
+{
+    "name": "virhe",
+    "version": "0.0.1",
+    "manifest_version": 2,
+    "description": "a daily handy tool for @ymotongpoo",
+    "icons": {
+        "48": "icons/icon48.png",
+        "96": "icons/icon96.png"
+    },
+    "background": {
+        "scripts": ["context-menu.js"]
+    },
+    "permissions": [
+        "tabs",
+        "http://tv.yahoo.co.jp/*",
+        "background",
+        "contextMenus"
+    ]
+}
