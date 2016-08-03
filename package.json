@@ -1,0 +1,32 @@
+{
+  "name": "virhe",
+  "version": "0.0.1",
+  "description": "handy tool only for ymotongpoo",
+  "main": "context-menu.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "gulp build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ymotongpoo/virhe.git"
+  },
+  "keywords": [
+    "chrome"
+  ],
+  "author": "Yoshi Yamaguchi (ymotongpoo)",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/ymotongpoo/virhe/issues"
+  },
+  "homepage": "https://github.com/ymotongpoo/virhe#readme",
+  "devDependencies": {
+    "@types/chrome": "0.0.30",
+    "eslint": "^3.2.2",
+    "gulp": "^3.9.1",
+    "gulp-typescript": "^2.13.6"
+  },
+  "dependencies": {
+    "@types/chrome": "0.0.30"
+  }
+}
