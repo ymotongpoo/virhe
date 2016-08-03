@@ -14,7 +14,7 @@
     ],
     "files": [
         "./node_modules/@types/chrome/index.d.ts",
-        "./node_modules/@types/filesytem/index.d.ts",
+        "./node_modules/@types/filesystem/index.d.ts",
         "./node_modules/@types/filewriter/index.d.ts"
     ]
 }

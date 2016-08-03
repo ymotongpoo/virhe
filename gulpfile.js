@@ -33,7 +33,7 @@ const paths = {
         files: 'static/**/*'
     },
     dist: {
-        dir: 'dist',
+        dir: 'dist'
     }
 };
 
