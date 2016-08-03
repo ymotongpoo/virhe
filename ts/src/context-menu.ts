@@ -40,15 +40,14 @@ function copyToClipboard(s: string): void {
 
 class XHR {
   public call(url: string) {
-    console.log(`URL: ${url}`);
     let xhr = new XMLHttpRequest();
     xhr.onload = this.programCallback;
     xhr.open("GET", url, true);
     xhr.responseType = "document";
+    xhr.send();
   }
 
   private programCallback(ev: Event): void {
-    console.log("callback");
     if (ev === null) {
       return
     }
