@@ -14,12 +14,30 @@ class Program {
   endTime: Date;
   duration: number;
 
+  private channelMapping = {
+    "NHK総合1・東京": "nhk",
+    "NHKEテレ1東京": "etv",
+    "日テレ1": "ntv",
+    "TBS1": "tbs",
+    "テレビ朝日": "ex",
+    "フジテレビ": "cx",
+    "TOKYO　MX1": "mx",
+    "NHKBS1": "nhkbs1",
+    "NHKBSプレミアム": "nhkbs2",
+    "BS日テレ": "bsntv",
+    "BS朝日1": "bsex",
+    "BS-TBS": "bstbs",
+    "BSジャパン": "bsjapan",
+    "BSフジ・181": "bsfuji"
+  }
+
   constructor(channel: string, title: string, date: string) {
     this.channel = channel;
     this.title = title;
     console.log(date);
     const dateRe = /([0-9]{4})年([0-9]{1,2})月([0-9]{1,2})日（\W）\s+([0-9]{1,2})時([0-9]{2})分～([0-9]{1,2})時([0-9]{2})分/
     const d = date.match(dateRe);
+    // TODO(ymotongpoo): handle tv schedule over midnight. 
     this.startTime = new Date(`${d[1]}-${d[2]}-${d[3]} ${d[4]}:${d[5]}:00`);
     this.endTime = new Date((`${d[1]}-${d[2]}-${d[3]} ${d[6]}:${d[7]}:00`));
     this.duration = (this.endTime.getTime() - this.startTime.getTime()) / 60000;
@@ -27,7 +45,8 @@ class Program {
 
   command(): string {
     const startStr = this.getGopt3recTime();
-    return `gopt3rec book -title="${this.title}" -tv=${this.channel} -start=${startStr} -min=${this.duration}`
+    const channel = this.channelMapping[this.channel];
+    return `gopt3rec book -title="${this.title}" -tv=${channel} -start=${startStr} -min=${this.duration}`
   }
 
   private getGopt3recTime(): string {
