@@ -47,6 +47,21 @@ const paths = {
     }
 };
 
+const config = {
+    browserify: {
+        opts: {
+            basedir: '.',
+            entries: ['./ts/src/context-menu.ts'],
+            cache: {},
+            packageCache: {},
+            debug: false
+        }
+    },
+    source: {
+        target: 'context-menu.js'
+    }
+};
+
 gulp.task('copy', [], () => {
     return gulp.src(paths.static.files)
         .pipe(gulp.dest(paths.dist.dir));
@@ -63,16 +78,10 @@ gulp.task('build:tsc', ['copy'], () => {
 });
 
 gulp.task('build', ['copy'], () => {
-    return browserify([], {
-            basedir: '.',
-            debug: true,
-            entries: ['ts/src/context-menu.ts'],
-            cache: {},
-            packageCache: {}
-        })
+    return browserify([], config.browserify.opts)
         .plugin(tsify)
         .bundle()
-        .pipe(source('context-menu.js'))
+        .pipe(source(config.source.target))
         .pipe(gulp.dest(paths.dist.dir));
 });
 
@@ -82,7 +91,7 @@ gulp.task('watch', [], () => {
     });
 });
 
-gulp.task('minify', [], () => {
+gulp.task('minify', ['build'], () => {
     gulp.src(paths.dist.js.files)
         .pipe(jsmin())
         .pipe(gulp.dest(paths.dist.dir));
@@ -92,4 +101,4 @@ gulp.task('clean', [], () => {
     return del(paths.dist.dir);
 });
 
-gulp.task('default', ['watch']);
+gulp.task('default', ['minify']);

@@ -29,6 +29,7 @@
     "gulp-jsmin": "^0.1.5",
     "gulp-typescript": "^2.13.6",
     "gulp-watch": "^4.3.9",
+    "moment": "^2.14.1",
     "tsify": "^1.0.3",
     "vinyl-source-stream": "^1.1.0"
   },

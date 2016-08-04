@@ -15,7 +15,7 @@
 /// <reference path="../../node_modules/@types/chrome/index.d.ts" />
 /// <reference path="../../node_modules/@types/moment/index.d.ts" />
 
-import moment from 'moment';
+import * as moment from 'moment';
 
 chrome.contextMenus.create({
   title: "virhe",
@@ -38,6 +38,7 @@ class Program {
     "TBS1": "tbs",
     "テレビ朝日": "ex",
     "フジテレビ": "cx",
+    "テレビ東京1": "tx",
     "TOKYO　MX1": "mx",
     "NHKBS1": "nhkbs1",
     "NHKBSプレミアム": "nhkbs2",
@@ -86,7 +87,7 @@ class Program {
   }
 
   private getGopt3recTime(): string {
-    return this.startTime.format("YYYYMMDD");
+    return this.startTime.format("MMDDHHmm");
   }
 }
 
