@@ -22,11 +22,19 @@
   "homepage": "https://github.com/ymotongpoo/virhe#readme",
   "devDependencies": {
     "@types/chrome": "0.0.30",
+    "@types/moment": "^2.11.29",
+    "browserify": "^13.1.0",
     "eslint": "^3.2.2",
     "gulp": "^3.9.1",
-    "gulp-typescript": "^2.13.6"
+    "gulp-jsmin": "^0.1.5",
+    "gulp-typescript": "^2.13.6",
+    "gulp-watch": "^4.3.9",
+    "tsify": "^1.0.3",
+    "vinyl-source-stream": "^1.1.0"
   },
   "dependencies": {
-    "@types/chrome": "0.0.30"
+    "@types/chrome": "0.0.30",
+    "@types/moment": "^2.11.29",
+    "browserify": "^13.1.0"
   }
 }

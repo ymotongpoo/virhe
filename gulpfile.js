@@ -14,8 +14,13 @@
 'use strict';
 
 const gulp = require('gulp');
-const ts = require('gulp-typescript');
 const del = require('del');
+const ts = require('gulp-typescript');
+const browserify = require('browserify');
+const source = require('vinyl-source-stream');
+const tsify = require('tsify');
+const watch = require('gulp-watch');
+const jsmin = require('gulp-jsmin');
 
 const paths = {
     ts: {
@@ -33,7 +38,12 @@ const paths = {
         files: 'static/**/*'
     },
     dist: {
-        dir: 'dist'
+        dir: 'dist',
+        js: {
+            files: [
+                './dist/**/*.js'
+            ]
+        }
     }
 };
 
@@ -42,12 +52,44 @@ gulp.task('copy', [], () => {
         .pipe(gulp.dest(paths.dist.dir));
 });
 
+gulp.task('build:tsc', ['copy'], () => {
+    var tsProject = ts.createProject('tsconfig.json', {
+        noEmitOnError: true,
+        typescript: require('typescript')
+    });
+    var tsResult = tsProject.src(paths.ts.src.files)
+        .pipe(ts(tsProject));
+    return tsResult.js.pipe(gulp.dest(paths.dist.dir));
+});
+
 gulp.task('build', ['copy'], () => {
-    return gulp.src(paths.ts.src.files)
-        .pipe(ts())
+    return browserify([], {
+            basedir: '.',
+            debug: true,
+            entries: ['ts/src/context-menu.ts'],
+            cache: {},
+            packageCache: {}
+        })
+        .plugin(tsify)
+        .bundle()
+        .pipe(source('context-menu.js'))
+        .pipe(gulp.dest(paths.dist.dir));
+});
+
+gulp.task('watch', [], () => {
+    watch(paths.ts.src.files, () => {
+        gulp.start('build');
+    });
+});
+
+gulp.task('minify', [], () => {
+    gulp.src(paths.dist.js.files)
+        .pipe(jsmin())
         .pipe(gulp.dest(paths.dist.dir));
 });
 
 gulp.task('clean', [], () => {
     return del(paths.dist.dir);
 });
+
+gulp.task('default', ['watch']);

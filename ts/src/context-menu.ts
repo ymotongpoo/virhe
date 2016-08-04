@@ -1,4 +1,21 @@
-///<reference path="../../node_modules/@types/chrome/index.d.ts" />
+//    Copyright 2016 Yoshi Yamaguchi
+// 
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+// 
+//        http://www.apache.org/licenses/LICENSE-2.0
+// 
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+
+/// <reference path="../../node_modules/@types/chrome/index.d.ts" />
+/// <reference path="../../node_modules/@types/moment/index.d.ts" />
+
+import moment from 'moment';
 
 chrome.contextMenus.create({
   title: "virhe",
@@ -10,8 +27,8 @@ chrome.contextMenus.create({
 class Program {
   channel: string;
   title: string;
-  startTime: Date;
-  endTime: Date;
+  startTime: moment.Moment;
+  endTime: moment.Moment;
   duration: number;
 
   private channelMapping = {
@@ -37,10 +54,29 @@ class Program {
     console.log(date);
     const dateRe = /([0-9]{4})年([0-9]{1,2})月([0-9]{1,2})日（\W）\s+([0-9]{1,2})時([0-9]{2})分～([0-9]{1,2})時([0-9]{2})分/
     const d = date.match(dateRe);
-    // TODO(ymotongpoo): handle tv schedule over midnight. 
-    this.startTime = new Date(`${d[1]}-${d[2]}-${d[3]} ${d[4]}:${d[5]}:00`);
-    this.endTime = new Date((`${d[1]}-${d[2]}-${d[3]} ${d[6]}:${d[7]}:00`));
-    this.duration = (this.endTime.getTime() - this.startTime.getTime()) / 60000;
+    // TODO(ymotongpoo): handle tv schedule over midnight.
+    let startHour = Number(d[4]);
+    let endHour = Number(d[6]);
+    let startOverMidnight = false;
+    let endOverMidnight = false;
+    if (startHour >= 24) {
+      startHour = startHour - 24
+      startOverMidnight = true
+    }
+    if (endHour >= 24) {
+      endHour = endHour - 24
+      endOverMidnight = true;
+    }
+    
+    this.startTime = moment(new Date(`${d[1]}-${d[2]}-${d[3]} ${startHour}:${d[5]}:00`));
+    if (startOverMidnight) {
+      this.startTime = this.startTime.add(1, "days");
+    }
+    this.endTime = moment(new Date((`${d[1]}-${d[2]}-${d[3]} ${endHour}:${d[7]}:00`)));
+    if (endOverMidnight) {
+      this.endTime = this.endTime.add(1, "days");
+    }
+    this.duration = this.endTime.diff(this.startTime) / 60000;
   }
 
   command(): string {
@@ -50,19 +86,7 @@ class Program {
   }
 
   private getGopt3recTime(): string {
-    const year = this.startTime.getFullYear();
-    const month = this.startTime.getMonth() + 1;
-    const day = this.startTime.getDate();
-
-    let monthStr = month.toString();
-    if (month < 10) {
-      monthStr = "0" + month.toString();
-    }
-    let dayStr = day.toString();
-    if (day < 10) {
-      dayStr = "0" + day.toString();
-    }
-    return year.toString() + monthStr + dayStr;
+    return this.startTime.format("YYYYMMDD");
   }
 }
 

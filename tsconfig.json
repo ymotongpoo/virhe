@@ -9,12 +9,11 @@
         "removeComments": false,
         "noImplicitAny": false
     },
-    "exclude": [
-        "node_modules"
-    ],
     "files": [
+        "./ts/src/context-menu.ts",
         "./node_modules/@types/chrome/index.d.ts",
         "./node_modules/@types/filesystem/index.d.ts",
-        "./node_modules/@types/filewriter/index.d.ts"
+        "./node_modules/@types/filewriter/index.d.ts",
+        "./node_modules/@types/moment/index.d.ts"
     ]
 }
