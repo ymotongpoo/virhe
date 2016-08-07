@@ -68,7 +68,7 @@ class Program {
       endHour = endHour - 24
       endOverMidnight = true;
     }
-    
+
     this.startTime = moment(new Date(`${d[1]}-${d[2]}-${d[3]} ${startHour}:${d[5]}:00`));
     if (startOverMidnight) {
       this.startTime = this.startTime.add(1, "days");
@@ -128,7 +128,14 @@ class XHR {
     title = title.trim();
     let channel = doc.getElementsByClassName('yjS')[0].textContent;
     channel = channel.trim();
-    let dateLong = doc.getElementsByClassName('pt5p')[0];
+    let dateLong: Element;
+    const pt5p = doc.getElementsByClassName('pt5p');
+    switch (pt5p.length) {
+      case 4:
+        dateLong = pt5p[1];
+      case 3:
+        dateLong = pt5p[0];
+    }
     let date = dateLong.getElementsByTagName('em')[0].textContent;
     date = date.trim();
 
