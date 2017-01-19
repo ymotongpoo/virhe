@@ -106,6 +106,27 @@ function copyToClipboard(s: string): void {
   document.body.removeChild(textArea);
 }
 
+const replaceMapping = {
+  "<": "＜",
+  ">": "＞",
+  "?": "？",
+  "(": "（",
+  ")": "）",
+  "#": "＃",
+  "*": "＊",
+  "$": "＄",
+  "&": "＆",
+  "^": "＾",
+}
+
+function escapeBashSpecialChars(src: string) {
+  for (let key in replaceMapping) {
+    const value = replaceMapping[key];
+    const regexp = new RegExp(key, "g");  
+    src.replace(regexp, value);
+  }
+}
+
 class XHR {
   public call(url: string) {
     let xhr = new XMLHttpRequest();
