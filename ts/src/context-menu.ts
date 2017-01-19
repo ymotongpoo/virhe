@@ -1,11 +1,11 @@
 //    Copyright 2016 Yoshi Yamaguchi
-// 
+//
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
 //    You may obtain a copy of the License at
-// 
+//
 //        http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //    Unless required by applicable law or agreed to in writing, software
 //    distributed under the License is distributed on an "AS IS" BASIS,
 //    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -52,7 +52,6 @@ class Program {
   constructor(channel: string, title: string, date: string) {
     this.channel = channel;
     this.title = title;
-    console.log(date);
     const dateRe = /([0-9]{4})年([0-9]{1,2})月([0-9]{1,2})日（\W）\s+([0-9]{1,2})時([0-9]{2})分～([0-9]{1,2})時([0-9]{2})分/
     const d = date.match(dateRe);
     // TODO(ymotongpoo): handle tv schedule over midnight.
@@ -83,7 +82,31 @@ class Program {
   command(): string {
     const startStr = this.getGopt3recTime();
     const channel = this.channelMapping[this.channel];
-    return `gopt3rec book -title="${this.title}" -tv=${channel} -start=${startStr} -min=${this.duration}`
+    const title = this.escapeBashSpecialChars(this.title);
+    return `gopt3rec book -title="${title}" -tv=${channel} -start=${startStr} -min=${this.duration}`
+  }
+
+  private replaceMapping = {
+    "!": "！",
+    "<": "＜",
+    ">": "＞",
+    "\\?": "？",
+    "\\(": "（",
+    "\\)": "）",
+    "#": "＃",
+    "\\*": "＊",
+    "\\$": "＄",
+    "&": "＆",
+    "\\^": "＾",
+  }
+  private escapeBashSpecialChars(src: string): string {
+    let original = src;
+    for (let key in this.replaceMapping) {
+      const value = this.replaceMapping[key];
+      const regexp = new RegExp(key, "g");
+      original = original.replace(regexp, value);
+    }
+    return original;
   }
 
   private getGopt3recTime(): string {
@@ -104,27 +127,6 @@ function copyToClipboard(s: string): void {
   textArea.select();
   document.execCommand('copy');
   document.body.removeChild(textArea);
-}
-
-const replaceMapping = {
-  "<": "＜",
-  ">": "＞",
-  "?": "？",
-  "(": "（",
-  ")": "）",
-  "#": "＃",
-  "*": "＊",
-  "$": "＄",
-  "&": "＆",
-  "^": "＾",
-}
-
-function escapeBashSpecialChars(src: string) {
-  for (let key in replaceMapping) {
-    const value = replaceMapping[key];
-    const regexp = new RegExp(key, "g");  
-    src.replace(regexp, value);
-  }
 }
 
 class XHR {
