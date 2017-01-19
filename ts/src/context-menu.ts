@@ -13,7 +13,7 @@
 //    limitations under the License.
 
 /// <reference path="../../node_modules/@types/chrome/index.d.ts" />
-/// <reference path="../../node_modules/@types/moment/index.d.ts" />
+/// <reference path="../../node_modules/moment/moment.d.ts" />
 
 import * as moment from 'moment';
 

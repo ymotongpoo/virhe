@@ -2,5 +2,6 @@
 {
     "editor.renderWithSpaces": true,
     "editor.tabSize": 2,
-    "editor.insertSpaces": true
-}
+    "editor.insertSpaces": true,
+    "typescript.check.workspaceVersion": false
+  }
