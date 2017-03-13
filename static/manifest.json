@@ -13,6 +13,7 @@
     "permissions": [
         "tabs",
         "http://tv.yahoo.co.jp/*",
+        "https://tv.yahoo.co.jp/*",
         "background",
         "contextMenus"
     ]
