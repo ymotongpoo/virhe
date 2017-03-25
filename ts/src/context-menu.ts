@@ -160,6 +160,8 @@ class XHR {
         dateLong = pt5p[0];
       case 6:
         dateLong = pt5p[0];
+      case 5:
+        dateLong = pt5p[0];
     }
     let date = dateLong.getElementsByTagName('em')[0].textContent;
     date = date.trim();
